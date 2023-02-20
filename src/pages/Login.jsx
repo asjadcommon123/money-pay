@@ -6,6 +6,7 @@ import { loginSchema } from "../validation/Schema";
 import ErrorMessage from "../components/ErrorMessage";
 import InputField from "../components/Input";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Login = () => {
   const formik = useFormik({
     initialValues: {
@@ -14,7 +15,29 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // const url =
+      //   "https://likeformoney-mweehlaxw-syedfatehalam.vercel.app/register";
+      const body = {
+        username: formik.values.email,
+        password: formik.values.password,
+      };
+      axios
+        .post(
+          "https://testapp1-78kdrqju8-syedfatehalam.vercel.app/login",
+          body,
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   });
   const navigate = useNavigate();
@@ -36,6 +59,7 @@ const Login = () => {
           <InputField
             type="text"
             label="Username"
+            plain
             id="email"
             name="email"
             onChange={formik.handleChange}
@@ -47,6 +71,7 @@ const Login = () => {
           ) : null}
           <InputField
             type="password"
+            plain
             label="Password"
             id="password"
             name="password"

@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
         white: "#fff",
-        "rich-black": "#000F1F",
+        "light-green": "#37d70d",
         "rich-black-hover": "#011830",
         "blue-sapphire": "#006983",
         "blue-sapphire-hover": "#0786a6",
@@ -15,9 +15,13 @@ module.exports = {
         alabaster: "#EEF0EB",
         "milk-grey": "#ccc",
       },
+      backgroundImage: {
+        "hero-pattern":
+          "linear-gradient(0deg, rgba(16,69,2,1) 0%, rgba(1,38,8,1) 37%, rgba(4,5,5,1) 100%);",
+      },
       boxShadow: {
         xl: " 2px 6px 5px 0px rgba(145,145,150,0.47)",
-        xxl: "  2px 6px 5px 0px rgba(50,50,145,0.47)",
+        xxl: "   3px 3px 5px 0px rgba(145,141,141,0.75)",
       },
     },
 

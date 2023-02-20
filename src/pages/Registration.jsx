@@ -5,17 +5,45 @@ import { registrationSchema } from "../validation/Schema";
 import ErrorMessage from "../components/ErrorMessage";
 import InputField from "../components/Input";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Registration = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
+      name: "",
+      cdf: "",
+      dob: "",
       password: "",
+      confirmPassword: "",
+      whatsapp: "",
     },
     validationSchema: registrationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: () => {
+      const url =
+        "https://testapp1-78kdrqju8-syedfatehalam.vercel.app/register";
+      const body = {
+        name: formik.values.name,
+        email: formik.values.email,
+        gender: formik.values.gender,
+        password: formik.values.password,
+        confirmPassword: formik.values.confirmPassword,
+      };
+      axios
+        .post(url, body, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   });
+
   const navigate = useNavigate();
   return (
     <div className="flex justify-center">
@@ -98,7 +126,7 @@ const Registration = () => {
           {formik.touched.whatsapp && formik.errors.whatsapp ? (
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
           ) : null}
-          {/* 
+
           <InputField
             plain
             type="text"
@@ -111,9 +139,10 @@ const Registration = () => {
           />
           {formik.touched.gender && formik.errors.gender ? (
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
-          ) : null} */}
-          {/* <label for="gender">Gender</label> */}
-          <select
+          ) : null}
+
+          {/* <label for="gender">Gender</label>
+          {/* <select
             name="gender"
             id="gender"
             className="w-full shadow-xl rounded h-12 mb-2"
@@ -124,7 +153,7 @@ const Registration = () => {
             <option className="cursor-pointer" value="female">
               Female
             </option>
-          </select>
+          </select> */}
           <InputField
             type="password"
             id="password"
