@@ -15,23 +15,18 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      // const url =
-      //   "https://likeformoney-mweehlaxw-syedfatehalam.vercel.app/register";
+      const url = "https://testapp1-khaki.vercel.app/login";
       const body = {
-        username: formik.values.email,
+        email: formik.values.email,
         password: formik.values.password,
       };
       axios
-        .post(
-          "https://testapp1-78kdrqju8-syedfatehalam.vercel.app/login",
-          body,
-          {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          }
-        )
+        .post(url, body, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
         .then(function (response) {
           console.log(response);
         })

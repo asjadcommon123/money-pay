@@ -19,8 +19,7 @@ const Registration = () => {
     },
     validationSchema: registrationSchema,
     onSubmit: () => {
-      const url =
-        "https://testapp1-78kdrqju8-syedfatehalam.vercel.app/register";
+      const url = "https://testapp1-khaki.vercel.app/register";
       const body = {
         name: formik.values.name,
         email: formik.values.email,
