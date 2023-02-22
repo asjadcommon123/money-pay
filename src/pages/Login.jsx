@@ -1,7 +1,5 @@
 import { useFormik } from "formik";
 import React from "react";
-// import { toast } from "react-hot-toast";
-
 import { loginSchema } from "../validation/Schema";
 import ErrorMessage from "../components/ErrorMessage";
 import InputField from "../components/Input";
