@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 // import { toast } from "react-hot-toast";
 import { registrationSchema } from "../validation/Schema";
 import ErrorMessage from "../components/ErrorMessage";
@@ -7,6 +7,8 @@ import InputField from "../components/Input";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const Registration = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [authenticationError, setAuthenticationError] = useState(false);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -37,8 +39,12 @@ const Registration = () => {
         .then(function (response) {
           console.log(response);
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((res) => {
+          setErrorMessage(res.response.data.detail);
+          setAuthenticationError(true);
+          setTimeout(() => {
+            setAuthenticationError(false);
+          }, 1200);
         });
     },
   });
@@ -54,6 +60,11 @@ const Registration = () => {
           onSubmit={formik.handleSubmit}
           className="w-full  p-4 pb-12 rounded-xl "
         >
+          {authenticationError && (
+            <p className="text-danger-red text-center text-sm font-semibold mb-3">
+              {errorMessage}
+            </p>
+          )}
           <InputField
             plain
             label="Name/Surname"
@@ -193,6 +204,7 @@ const Registration = () => {
               className="cursor-pointer text-blue-sapphire-hover "
               onClick={() => navigate("/admin-login")}
             >
+              {" "}
               Login
             </span>
           </p>

@@ -7,7 +7,11 @@ import ErrorMessage from "../components/ErrorMessage";
 import InputField from "../components/Input";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
 const Login = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [authenticationError, setAuthenticationError] = useState(false);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -28,10 +32,15 @@ const Login = () => {
           },
         })
         .then(function (response) {
-          console.log(response);
+          console.log(response.detail);
+          toast.success("logged In");
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((res) => {
+          setErrorMessage(res.response.data.detail);
+          setAuthenticationError(true);
+          setTimeout(() => {
+            setAuthenticationError(false);
+          }, 1200);
         });
     },
   });
@@ -39,11 +48,6 @@ const Login = () => {
   return (
     <div className="h-screen">
       <div className=" flex flex-col justify-center items-center h-screen  lg:p-20">
-        {/* {authenticationError && (
-          <p className="text-danger-red text-xl font-semibold mb-3">
-            Sorry! Email/Password is Incorrect
-          </p>
-        )} */}
         <form
           onSubmit={formik.handleSubmit}
           className="w-full  p-4 pb-12 rounded-xl md:w-2/4"
@@ -51,6 +55,11 @@ const Login = () => {
           <h1 className="text-2xl font-medium mb-10 w-full text-center text-[#171C33]">
             Log in and start earning
           </h1>
+          {authenticationError && (
+            <p className="text-danger-red text-center text-sm font-semibold mb-3">
+              {errorMessage}
+            </p>
+          )}
           <InputField
             type="text"
             label="Username"
@@ -91,6 +100,7 @@ const Login = () => {
               className="cursor-pointer text-blue-sapphire-hover "
               onClick={() => navigate("/signup")}
             >
+              {" "}
               Sign up
             </span>
           </p>
