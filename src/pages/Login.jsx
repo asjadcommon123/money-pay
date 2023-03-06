@@ -1,23 +1,26 @@
-import { useFormik } from "formik";
-import React from "react";
-import { loginSchema } from "../validation/Schema";
-import ErrorMessage from "../components/ErrorMessage";
-import InputField from "../components/Input";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import axios from 'axios';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import ErrorMessage from '../components/ErrorMessage';
+import InputField from '../components/Input';
+import Loading from '../components/loader/Loading';
+import { loginSchema } from '../validation/Schema';
 const Login = () => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [authenticationError, setAuthenticationError] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      const url = "https://testapp1-khaki.vercel.app/login";
+      setIsloading(true);
+      const url = 'https://testapp1-khaki.vercel.app/login';
       const body = {
         email: formik.values.email,
         password: formik.values.password,
@@ -25,24 +28,27 @@ const Login = () => {
       axios
         .post(url, body, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         })
         .then(function (response) {
-          console.log(response.detail);
-          toast.success("logged In");
+          const token = response.data.access_token;
+          localStorage.setItem('token', JSON.stringify(token));
+          toast.success('logged In');
+          setIsloading(false);
+          navigate('/admin-dashboard');
         })
         .catch((res) => {
           setErrorMessage(res.response.data.detail);
           setAuthenticationError(true);
           setTimeout(() => {
             setAuthenticationError(false);
+            setIsloading(false);
           }, 1200);
         });
     },
   });
-  const navigate = useNavigate();
   return (
     <div className="h-screen">
       <div className=" flex flex-col justify-center items-center h-screen  lg:p-20">
@@ -60,7 +66,7 @@ const Login = () => {
           )}
           <InputField
             type="text"
-            label="Username"
+            label="Email"
             plain
             id="email"
             name="email"
@@ -87,18 +93,18 @@ const Login = () => {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="h-16 w-1/2 bg-[#171C33] rounded-lg text-[#fff]  font-medium text-lg mt-10"
+              className="h-12 w-1/2 bg-[#171C33] rounded-lg text-[#fff]  font-medium text-lg mt-10 flex justify-center items-center"
             >
-              Login
+              {isLoading ? <Loading /> : 'Login'}
             </button>
           </div>
           <p className="text-center mt-5 font-semibold">
             Don't have an account ?
             <span
               className="cursor-pointer text-blue-sapphire-hover "
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate('/signup')}
             >
-              {" "}
+              {' '}
               Sign up
             </span>
           </p>

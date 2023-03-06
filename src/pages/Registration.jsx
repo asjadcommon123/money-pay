@@ -1,27 +1,28 @@
-import { useFormik } from "formik";
-import React, { useState } from "react";
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
 // import { toast } from "react-hot-toast";
-import { registrationSchema } from "../validation/Schema";
-import ErrorMessage from "../components/ErrorMessage";
-import InputField from "../components/Input";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import ErrorMessage from '../components/ErrorMessage';
+import InputField from '../components/Input';
+import { registrationSchema } from '../validation/Schema';
 const Registration = () => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [authenticationError, setAuthenticationError] = useState(false);
   const formik = useFormik({
     initialValues: {
-      email: "",
-      name: "",
-      cdf: "",
-      dob: "",
-      password: "",
-      confirmPassword: "",
-      whatsapp: "",
+      email: '',
+      name: '',
+      cdf: '',
+      dob: '',
+      password: '',
+      confirmPassword: '',
+      whatsapp: '',
     },
     validationSchema: registrationSchema,
     onSubmit: () => {
-      const url = "https://testapp1-khaki.vercel.app/register";
+      const url = 'https://testapp1-khaki.vercel.app/register';
       const body = {
         name: formik.values.name,
         email: formik.values.email,
@@ -32,12 +33,13 @@ const Registration = () => {
       axios
         .post(url, body, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         })
         .then(function (response) {
-          console.log(response);
+          toast.success('Signed up Sucessfully');
+          navigate('/admin-login');
         })
         .catch((res) => {
           setErrorMessage(res.response.data.detail);
@@ -202,9 +204,9 @@ const Registration = () => {
             Already have an account ?
             <span
               className="cursor-pointer text-blue-sapphire-hover "
-              onClick={() => navigate("/admin-login")}
+              onClick={() => navigate('/admin-login')}
             >
-              {" "}
+              {' '}
               Login
             </span>
           </p>
