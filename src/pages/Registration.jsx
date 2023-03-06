@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
 import InputField from '../components/Input';
 import { registrationSchema } from '../validation/Schema';
+import './pages.css';
 const Registration = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [authenticationError, setAuthenticationError] = useState(false);
@@ -39,7 +40,7 @@ const Registration = () => {
         })
         .then(function (response) {
           toast.success('Signed up Sucessfully');
-          navigate('/admin-login');
+          navigate('/login');
         })
         .catch((res) => {
           setErrorMessage(res.response.data.detail);
@@ -60,7 +61,7 @@ const Registration = () => {
         </h1>
         <form
           onSubmit={formik.handleSubmit}
-          className="w-full  p-4 pb-12 rounded-xl "
+          className=" form w-full  p-4 pb-12 rounded-xl "
         >
           {authenticationError && (
             <p className="text-danger-red text-center text-sm font-semibold mb-3">
