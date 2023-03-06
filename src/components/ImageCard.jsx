@@ -41,7 +41,7 @@ const ImageCard = ({ src, likes, id }) => {
         crossorigin="anonymous"
         src={src}
         alt=""
-        className="object-cover h-3/4 rounded-[1rem]"
+        className="w-full object-cover h-3/4 rounded-[1rem]"
       />
       <div
         onClick={getLike}
