@@ -7,6 +7,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import InputField from '../components/Input';
 import Loading from '../components/loader/Loading';
 import { loginSchema } from '../validation/Schema';
+import './pages.css';
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [authenticationError, setAuthenticationError] = useState(false);
@@ -37,7 +38,7 @@ const Login = () => {
           localStorage.setItem('token', JSON.stringify(token));
           toast.success('logged In');
           setIsloading(false);
-          navigate('/admin-dashboard');
+          navigate('/dashboard');
         })
         .catch((res) => {
           setErrorMessage(res.response.data.detail);
@@ -51,7 +52,7 @@ const Login = () => {
   });
   return (
     <div className="h-screen">
-      <div className=" flex flex-col justify-center items-center h-screen  lg:p-20">
+      <div className="form flex flex-col justify-center items-center h-screen  lg:p-20">
         <form
           onSubmit={formik.handleSubmit}
           className="w-full  p-4 pb-12 rounded-xl md:w-2/4"

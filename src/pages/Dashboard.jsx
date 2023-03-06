@@ -9,7 +9,7 @@ const Dashboard = () => {
   const [dataItems, setDataItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const [pageState, setPageState] = useState(1);
+  const [pageState, setPageState] = useState(0);
   const listener = useRef(true);
 
   const getProfiles = (page) => {
@@ -33,8 +33,9 @@ const Dashboard = () => {
   };
 
   const increase = () => {
-    setIsFetching(true);
+    // setIsFetching(true);
     setPageState((prev) => prev + 1);
+    console.log(pageState);
   };
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const Dashboard = () => {
         setTimeout(() => {
           getProfiles(pageState);
           setIsFetching(false);
-        }, 2000);
+        }, 1500);
         return;
       }
     }
@@ -65,6 +66,7 @@ const Dashboard = () => {
   return (
     <div className="relative overflow-auto px-6 flex flex-col items-center pb-24 justify-center pt-20 bg-hero-pattern h-screen ">
       <Notification />
+      <button onClick={increase}>click</button>
       {isLoading ? (
         <Loading />
       ) : (

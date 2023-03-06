@@ -8,7 +8,7 @@ const Checkout = () => {
       <p className="text-3xl font-bold text-white "> This is coming soon</p>
       <div>
         <p
-          onClick={() => navigate('/admin-dashboard')}
+          onClick={() => navigate('/dashboard')}
           className="text-xl cursor-pointer hover:text-white"
         >
           Back to home

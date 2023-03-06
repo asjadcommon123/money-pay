@@ -3,7 +3,7 @@ import profile from '../images/profile.png';
 
 const Notification = () => {
   return (
-    <div className="fixed w-5/6 top-4 flex bg-white justify-between py-2 px-3 rounded-2xl">
+    <div className="fixed w-5/6 top-4 flex bg-white justify-between py-2 px-3 rounded-2xl z-20">
       <div className="rounded-full w-14 h-14 bg-grey border-black border">
         <img src={profile} alt="" className="w-full h-full" />
       </div>
