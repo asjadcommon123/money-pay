@@ -1,7 +1,7 @@
-import React from "react";
-import logoImg from "../images/logo.png";
-import logologin from "../images/loginLogo.png";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import logologin from '../images/loginLogo.png';
+import logoImg from '../images/logo.png';
 const Landing = () => {
   const navigate = useNavigate();
   return (
@@ -17,7 +17,7 @@ const Landing = () => {
           </h1>
           <div className="bg-white rounded-xl px-5 pt-6 pb-3">
             <button
-              onClick={() => navigate("/admin-login")}
+              onClick={() => navigate('/admin-login')}
               className=" flex gap-5 pl-4 items-center w-full border-none bg-white  py-3 text-sm font-semibold shadow-xxl"
             >
               <p className="bg-black rounded p-1">
