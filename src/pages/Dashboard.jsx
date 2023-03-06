@@ -7,7 +7,7 @@ import Notification from '../components/Notification';
 
 const Dashboard = () => {
   const [dataItems, setDataItems] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [pageState, setPageState] = useState(1);
   const listener = useRef(true);
@@ -25,7 +25,7 @@ const Dashboard = () => {
       })
       .then((res) => {
         setDataItems((prev) => [...prev, ...res.data]);
-        setIsloading(false);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -33,17 +33,17 @@ const Dashboard = () => {
   };
 
   const increase = () => {
-    setPageState((prev) => prev + 1);
-    console.log(pageState);
     setIsFetching(true);
+    setPageState((prev) => prev + 1);
   };
 
   useEffect(() => {
     if (listener.current) {
       listener.current = false;
-      // setIsloading(true);
+      setIsLoading(true);
       getProfiles(pageState);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const listInnerRef = useRef();
@@ -53,7 +53,6 @@ const Dashboard = () => {
       const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
         increase();
-        console.log('Reached bottom');
         setTimeout(() => {
           getProfiles(pageState);
           setIsFetching(false);
@@ -66,7 +65,6 @@ const Dashboard = () => {
   return (
     <div className="relative overflow-auto px-6 flex flex-col items-center pb-24 justify-center pt-20 bg-hero-pattern h-screen ">
       <Notification />
-
       {isLoading ? (
         <Loading />
       ) : (
@@ -78,12 +76,13 @@ const Dashboard = () => {
           {dataItems?.map(({ URL, likes, id }, idx) => {
             return (
               <div key={idx} className="flex justify-center max-w-[786px]  ">
-                <ImageCard src={URL} likes={likes} />
+                <ImageCard src={URL} likes={likes} id={id} />
               </div>
             );
           })}
         </div>
       )}
+
       {isFetching ? <Loading /> : null}
       <DashboardFooter />
     </div>
