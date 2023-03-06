@@ -38,7 +38,7 @@ const Login = () => {
           localStorage.setItem('token', JSON.stringify(token));
           toast.success('logged In');
           setIsloading(false);
-          navigate('/admin-dashboard');
+          navigate('/dashboard');
         })
         .catch((res) => {
           setErrorMessage(res.response.data.detail);
