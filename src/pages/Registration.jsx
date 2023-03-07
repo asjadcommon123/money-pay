@@ -1,29 +1,30 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
-// import { toast } from "react-hot-toast";
-import axios from 'axios';
+import React from 'react';
 import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
 import InputField from '../components/Input';
+import Loading from '../components/loader/Loading';
+import { userRegister } from '../redux/authSlice';
 import { registrationSchema } from '../validation/Schema';
 import './pages.css';
 const Registration = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [authenticationError, setAuthenticationError] = useState(false);
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
   const formik = useFormik({
     initialValues: {
       email: '',
       name: '',
       cdf: '',
       dob: '',
+      gender: '',
       password: '',
       confirmPassword: '',
       whatsapp: '',
     },
     validationSchema: registrationSchema,
     onSubmit: () => {
-      const url = 'https://testapp1-khaki.vercel.app/register';
       const body = {
         name: formik.values.name,
         email: formik.values.email,
@@ -31,24 +32,13 @@ const Registration = () => {
         password: formik.values.password,
         confirmPassword: formik.values.confirmPassword,
       };
-      axios
-        .post(url, body, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(function (response) {
-          toast.success('Signed up Sucessfully');
-          navigate('/login');
-        })
-        .catch((res) => {
-          setErrorMessage(res.response.data.detail);
-          setAuthenticationError(true);
-          setTimeout(() => {
-            setAuthenticationError(false);
-          }, 1200);
-        });
+
+      dispatch(userRegister(body)).then((data) => {
+        if (data.payload) {
+          navigate('/dashboard');
+        }
+        toast.error('An error occured');
+      });
     },
   });
 
@@ -63,11 +53,6 @@ const Registration = () => {
           onSubmit={formik.handleSubmit}
           className=" form w-full  p-4 pb-12 rounded-xl "
         >
-          {authenticationError && (
-            <p className="text-danger-red text-center text-sm font-semibold mb-3">
-              {errorMessage}
-            </p>
-          )}
           <InputField
             plain
             label="Name/Surname"
@@ -140,33 +125,31 @@ const Registration = () => {
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
           ) : null}
 
-          <InputField
-            plain
-            type="text"
-            id="gender"
-            label="Gender"
+          <label for="gender">Gender</label>
+          <select
             name="gender"
+            id="gender"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.gender}
-          />
+            className="w-full shadow-xl rounded h-12 mb-2"
+          >
+            <option value="" label="_Select a gender_">
+              Select a gender
+            </option>
+            <option className="cursor-pointer" value="Male">
+              Male
+            </option>
+            <option className="cursor-pointer" value="Female">
+              Female
+            </option>
+            <option className="cursor-pointer" value="Prefer not to say">
+              Prefer not to say
+            </option>
+          </select>
           {formik.touched.gender && formik.errors.gender ? (
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
           ) : null}
-
-          {/* <label for="gender">Gender</label>
-          {/* <select
-            name="gender"
-            id="gender"
-            className="w-full shadow-xl rounded h-12 mb-2"
-          >
-            <option className="cursor-pointer" value="male">
-              Male
-            </option>
-            <option className="cursor-pointer" value="female">
-              Female
-            </option>
-          </select> */}
           <InputField
             type="password"
             id="password"
@@ -198,7 +181,7 @@ const Registration = () => {
               type="submit"
               className=" px-20 py-3 bg-[#171C33] rounded-lg text-[#fff] font-medium text-lg mt-10"
             >
-              Signup
+              {isLoading ? <Loading /> : 'Signup'}
             </button>
           </div>
           <p className="text-center mt-5 font-semibold">
