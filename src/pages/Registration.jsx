@@ -132,7 +132,7 @@ const Registration = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.gender}
-            className="w-full shadow-xl rounded h-12 mb-2"
+            className="w-full shadow-xl rounded h-12 mb-2 bg-white outline-none"
           >
             <option value="" label="_Select a gender_">
               Select a gender
