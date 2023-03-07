@@ -1,18 +1,18 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
 import InputField from '../components/Input';
 import Loading from '../components/loader/Loading';
+import { userLogin } from '../redux/authSlice';
 import { loginSchema } from '../validation/Schema';
 import './pages.css';
+
 const Login = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [authenticationError, setAuthenticationError] = useState(false);
-  const [isLoading, setIsloading] = useState(false);
   const navigate = useNavigate();
+  const { isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -20,34 +20,15 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      setIsloading(true);
-      const url = 'https://testapp1-khaki.vercel.app/login';
       const body = {
         email: formik.values.email,
         password: formik.values.password,
       };
-      axios
-        .post(url, body, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(function (response) {
-          const token = response.data.access_token;
-          localStorage.setItem('token', JSON.stringify(token));
-          toast.success('logged In');
-          setIsloading(false);
+      dispatch(userLogin(body)).then((data) => {
+        if (!data.payload.code) {
           navigate('/dashboard');
-        })
-        .catch((res) => {
-          setErrorMessage(res.response.data.detail);
-          setAuthenticationError(true);
-          setTimeout(() => {
-            setAuthenticationError(false);
-            setIsloading(false);
-          }, 1200);
-        });
+        }
+      });
     },
   });
   return (
@@ -60,11 +41,6 @@ const Login = () => {
           <h1 className="text-2xl font-medium mb-10 w-full text-center text-[#171C33]">
             Log in and start earning
           </h1>
-          {authenticationError && (
-            <p className="text-danger-red text-center text-sm font-semibold mb-3">
-              {errorMessage}
-            </p>
-          )}
           <InputField
             type="text"
             label="Email"
