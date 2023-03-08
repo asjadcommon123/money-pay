@@ -16,6 +16,7 @@ const Dashboard = () => {
   const { isLoading, pageNumber, profiles } = useSelector(
     (state) => state.dashboard
   );
+
   const dispatch = useDispatch();
 
   const increase = () => {
@@ -37,6 +38,7 @@ const Dashboard = () => {
     if (listInnerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
+        console.log('Reached');
         setIsFetching(true);
         setTimeout(() => {
           increase();
@@ -56,7 +58,7 @@ const Dashboard = () => {
         <div
           onScroll={() => onScroll()}
           ref={listInnerRef}
-          className=" mt-10 overflow-auto h-screen"
+          className="mt-10 overflow-auto h-screen"
         >
           {profiles?.map(({ URL, likes, id }, idx) => {
             return (

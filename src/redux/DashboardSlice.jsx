@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getProfiles } from '../api/dashboard';
+import { getProfiles, likePost, userData } from '../api/dashboard';
 
 const initialState = {
   isLoading: false,
-  pageNumber: 2,
+  pageNumber: 0,
+  userData: {},
   profiles: [],
 };
 
@@ -16,10 +17,15 @@ export const updateProfilesList = createAsyncThunk(
   getProfiles
 );
 
+export const likeAPost = createAsyncThunk('dashboard/likeAPost', likePost);
+
+export const getUserData = createAsyncThunk('dashboard/getUserData', userData);
+
 export const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
   reducers: {
+    resetDashboardState: () => initialState,
     pageCounter: (state) => {
       state.pageNumber = state.pageNumber + 1;
     },
@@ -38,9 +44,21 @@ export const dashboardSlice = createSlice({
     builder.addCase(updateProfilesList.fulfilled, (state, action) => {
       state.profiles = [...state.profiles, ...action.payload];
     });
+
+    builder.addCase(likeAPost.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(getUserData.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.userData = {
+        email: action.payload.email,
+        balance: action.payload.earnedMoney,
+        limit: action.payload.limitReached,
+      };
+    });
   },
 });
 
-export const { pageCounter } = dashboardSlice.actions;
+export const { pageCounter, resetDashboardState } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
