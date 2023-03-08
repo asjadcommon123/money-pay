@@ -1,11 +1,12 @@
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
 import InputField from '../components/Input';
 import Loading from '../components/loader/Loading';
-import { userLogin } from '../redux/authSlice';
+import { resetState, userLogin } from '../redux/authSlice';
+import { getUserData, resetDashboardState } from '../redux/DashboardSlice';
 import { loginSchema } from '../validation/Schema';
 import './pages.css';
 
@@ -26,11 +27,17 @@ const Login = () => {
       };
       dispatch(userLogin(body)).then((data) => {
         if (!data.payload.code) {
+          dispatch(getUserData());
           navigate('/dashboard');
         }
       });
     },
   });
+
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(resetDashboardState());
+  }, [dispatch]);
   return (
     <div className="h-screen">
       <div className="form flex flex-col justify-center items-center h-screen  lg:p-20">

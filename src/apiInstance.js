@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { resetState } from './redux/authSlice';
 
 const instance = axios.create({
   baseURL: 'https://testapp1-khaki.vercel.app/',
@@ -29,11 +30,19 @@ instance.interceptors.request.use((config) => {
   };
   return newConfig;
 });
-export default instance;
 
-// headers: {
-//     Authorization: 'Bearer ',
-//     Accept: 'application/json',
-//     'Content-Type': 'application/json',
-//   },
-//   // .. other options
+instance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    const {
+      auth: { token },
+    } = store.getState();
+    if (error.response && error.response.status === 401 && token) {
+      store.dispatch(resetState());
+    }
+    return Promise.reject(error);
+  }
+);
+export default instance;
