@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { loginUser, registerUser } from '../api/auth';
-
+// import { persistor } from '../store';
 export const userLogin = createAsyncThunk('auth/userLogin', loginUser);
 export const userRegister = createAsyncThunk('auth/userRegister', registerUser);
 
@@ -12,7 +12,9 @@ const initialState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    resetState: () => initialState,
+  },
   extraReducers: (builder) => {
     builder.addCase(userLogin.fulfilled, (state, action) => {
       state.token = action.payload;
@@ -37,5 +39,5 @@ export const authSlice = createSlice({
     });
   },
 });
-
+export const { resetState } = authSlice.actions;
 export default authSlice.reducer;

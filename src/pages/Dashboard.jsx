@@ -16,6 +16,7 @@ const Dashboard = () => {
   const { isLoading, pageNumber, profiles } = useSelector(
     (state) => state.dashboard
   );
+
   const dispatch = useDispatch();
 
   const increase = () => {

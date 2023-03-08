@@ -188,7 +188,7 @@ const Registration = () => {
             Already have an account ?
             <span
               className="cursor-pointer text-blue-sapphire-hover "
-              onClick={() => navigate('/admin-login')}
+              onClick={() => navigate('/login')}
             >
               {' '}
               Login

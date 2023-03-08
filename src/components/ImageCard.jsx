@@ -1,5 +1,6 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   DPIconAdd,
@@ -7,29 +8,19 @@ import {
   DPIconFilledHeart,
   DPIconHeart,
 } from '../images/icons';
+import { getUserData, likeAPost } from '../redux/DashboardSlice';
 
 const ImageCard = ({ src, likes, id }) => {
-  const addLike = (id) => {
-    const items = JSON.parse(localStorage.getItem('token'));
-    const url = `https://testapp1-khaki.vercel.app/feed/like?id=${id}`;
-    axios({
-      method: 'put',
-      url: url,
-      headers: {
-        Authorization: 'Bearer ' + items,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        title: 'Making PUT Requests with Axios',
-      },
-    });
-  };
-
+  const { userData } = useSelector((state) => state.dashboard);
+  const { limit } = userData;
+  const dispatch = useDispatch();
   const [forLike, setForLike] = useState(false);
   const getLike = () => {
     setForLike((prev) => !prev);
-    addLike(id);
+    dispatch(likeAPost(id)).then(() => {
+      if (!limit) return dispatch(getUserData());
+      toast.error('You have reached your limit for the day');
+    });
   };
   return (
     <div className="w-full rounded-2xl h-[400px] relative">
@@ -52,7 +43,9 @@ const ImageCard = ({ src, likes, id }) => {
       <div className="flex justify-between gap-4 p-4 items-center bg-white absolute bottom-[4.2rem] rounded-b-[2rem] md:px-4 md:py-6 w-full ">
         <span className="flex items-center gap-2">
           <DPIconFilledHeart />
-          <p className="font-semibold text-sm">{likes}</p>
+          <p className="font-semibold text-sm">
+            {forLike ? parseInt(likes) + 1 : likes}
+          </p>
         </span>
 
         <span className="flex items-center gap-2">
