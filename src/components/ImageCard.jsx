@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -31,7 +30,7 @@ const ImageCard = ({ src, likes, id }) => {
         <DPIconAdd />
         <span className="text-light-green">R$</span> 1,00
       </Link>
-      <LazyLoadImage
+      <img
         crossorigin="anonymous"
         src={src}
         alt=""
