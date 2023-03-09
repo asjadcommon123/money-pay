@@ -51,7 +51,7 @@ const Registration = () => {
         </h1>
         <form
           onSubmit={formik.handleSubmit}
-          className=" form w-full  p-4 pb-12 rounded-xl "
+          className="form w-full  p-4 pb-12 rounded-xl"
         >
           <InputField
             plain

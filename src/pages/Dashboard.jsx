@@ -50,7 +50,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="relative overflow-auto px-6 flex flex-col items-center pb-24 justify-center pt-20 bg-hero-pattern h-screen ">
+    <div className="relative px-6 overflow-hidden flex flex-col items-center justify-center pt-20 bg-hero-pattern h-screen ">
       <Notification />
       {isLoading ? (
         <Loading />
@@ -58,7 +58,7 @@ const Dashboard = () => {
         <div
           onScroll={() => onScroll()}
           ref={listInnerRef}
-          className="mt-10 overflow-auto h-screen"
+          className="mt-10 mb-24 h-screen overflow-auto"
         >
           {profiles?.map(({ URL, likes, id }, idx) => {
             return (
@@ -67,10 +67,11 @@ const Dashboard = () => {
               </div>
             );
           })}
+          <div className="flex justify-center">
+            {isFetching ? <Loading /> : null}
+          </div>
         </div>
       )}
-
-      {isFetching ? <Loading /> : null}
       <DashboardFooter />
     </div>
   );
