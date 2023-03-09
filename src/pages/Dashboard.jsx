@@ -32,19 +32,32 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const listInnerRef = useRef();
+  // const listInnerRef = useRef();
 
-  const onScroll = () => {
-    if (listInnerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
-      if (scrollTop + clientHeight === scrollHeight) {
-        setIsFetching(true);
-        setTimeout(() => {
-          increase();
-          dispatch(updateProfilesList(pageNumber));
-        }, 1500);
-        return;
-      }
+  // const onScroll = () => {
+  //   if (listInnerRef.current) {
+  //     const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+  //     if (scrollTop + clientHeight === scrollHeight) {
+  //       setIsFetching(true);
+  //       setTimeout(() => {
+  //         increase();
+  //         dispatch(updateProfilesList(pageNumber));
+  //       }, 1500);
+  //       return;
+  //     }
+  //   }
+  // };
+
+  const handleScroll = (e) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom) {
+      setIsFetching(true);
+      setTimeout(() => {
+        increase();
+        dispatch(updateProfilesList(pageNumber));
+      }, 1500);
+      return;
     }
   };
 
@@ -55,8 +68,8 @@ const Dashboard = () => {
         <Loading />
       ) : (
         <div
-          onScroll={() => onScroll()}
-          ref={listInnerRef}
+          onScroll={handleScroll}
+          // ref={listInnerRef}
           className="mt-10 mb-24 h-screen overflow-auto"
         >
           {profiles?.map(({ URL, likes, id }, idx) => {
