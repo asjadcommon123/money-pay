@@ -23,6 +23,6 @@ export const registerUser = async (body) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.detail);
   }
 };

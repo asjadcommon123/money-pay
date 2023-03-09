@@ -37,7 +37,6 @@ const Registration = () => {
         if (data.payload) {
           navigate('/dashboard');
         }
-        toast.error('An error occured');
       });
     },
   });
