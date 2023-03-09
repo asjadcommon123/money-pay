@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import React from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
@@ -34,6 +35,7 @@ const Registration = () => {
 
       dispatch(userRegister(body)).then((data) => {
         if (data.payload) {
+          toast.success('Signup Complete');
           navigate('/dashboard');
         }
       });
