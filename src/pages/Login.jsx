@@ -26,10 +26,9 @@ const Login = () => {
         password: formik.values.password,
       };
       dispatch(userLogin(body)).then((data) => {
-        if (!data.payload.code) {
-          dispatch(getUserData());
-          navigate('/dashboard');
-        }
+        if (data.payload === 'undefined' || !data.payload) return;
+        dispatch(getUserData());
+        navigate('/dashboard');
       });
     },
   });
