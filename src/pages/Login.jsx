@@ -40,10 +40,10 @@ const Login = () => {
   }, [dispatch]);
   return (
     <div className="h-screen">
-      <div className="form flex flex-col justify-center items-center h-screen  lg:p-20">
+      <div className=" flex flex-col justify-center items-center h-screen  lg:p-20">
         <form
           onSubmit={formik.handleSubmit}
-          className="w-full  p-4 pb-12 rounded-xl md:w-2/4"
+          className="w-full form p-4 pb-12 rounded-xl md:w-2/4"
         >
           <h1 className="text-2xl font-medium mb-10 w-full text-center text-[#171C33]">
             Log in and start earning
