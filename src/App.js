@@ -8,7 +8,7 @@ import PrivateRoutes from './routes/PrivateRoutes';
 
 function App() {
   return (
-    <div className="font-poppins ">
+    <div className="font-poppins box-border p-0 m-0">
       <Router>
         <Routes>
           <Route exact path="/" element={<Landing />} />
