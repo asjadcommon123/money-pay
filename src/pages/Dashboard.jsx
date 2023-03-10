@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import SyncLoader from 'react-spinners/SyncLoader';
 import Dashboardlayout from '../components/Dashboardlayout';
 import ImageCard from '../components/ImageCard';
 import Loading from '../components/loader/Loading';
@@ -18,12 +19,10 @@ const Dashboard = () => {
   );
 
   const dispatch = useDispatch();
-
   const increase = () => {
     dispatch(pageCounter());
     setIsFetching(false);
   };
-
   useEffect(() => {
     if (listener.current) {
       listener.current = false;
@@ -57,7 +56,6 @@ const Dashboard = () => {
     const clientHeight = container.clientHeight;
     const scrollHeight = container.scrollHeight;
     const isAtBottom = scrollTop + clientHeight + 500 >= scrollHeight - 30;
-    console.log(scrollTop + clientHeight, scrollHeight - 100);
     if (isAtBottom && !isLoading) {
       increase();
       dispatch(updateProfilesList(pageNumber));
@@ -67,7 +65,7 @@ const Dashboard = () => {
   return (
     <Dashboardlayout>
       {isLoading ? (
-        <Loading />
+        <SyncLoader color="#fff" loading={true} size={10} />
       ) : (
         <div
           ref={divRef}
