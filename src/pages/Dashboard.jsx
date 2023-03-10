@@ -32,16 +32,35 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleScroll = (e) => {
-    const bottom =
-      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-    if (bottom) {
-      setIsFetching(true);
-      setTimeout(() => {
-        increase();
-        dispatch(updateProfilesList(pageNumber));
-      }, 1500);
-      return;
+  // const handleScroll = (e) => {
+  //   console.log(
+  //     e.target.scrollHeight,
+  //     e.target.scrollTop,
+  //     e.target.clientHeight
+  //   );
+  //   const bottom =
+  //     e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+  //   if (bottom) {
+  //     setIsFetching(true);
+  //     setTimeout(() => {
+  //       console.log('reached');
+  //       // increase();
+  //       // dispatch(updateProfilesList(pageNumber));
+  //     }, 1500);
+  //     return;
+  //   }
+  // };
+  const divRef = useRef(null);
+  const handleScroll = () => {
+    const container = divRef.current;
+    const scrollTop = container.scrollTop;
+    const clientHeight = container.clientHeight;
+    const scrollHeight = container.scrollHeight;
+    const isAtBottom = scrollTop + clientHeight + 500 >= scrollHeight - 30;
+    console.log(scrollTop + clientHeight, scrollHeight - 100);
+    if (isAtBottom && !isLoading) {
+      increase();
+      dispatch(updateProfilesList(pageNumber));
     }
   };
 
@@ -51,6 +70,7 @@ const Dashboard = () => {
         <Loading />
       ) : (
         <div
+          ref={divRef}
           onScroll={handleScroll}
           className="layout mt-10 mb-24 overflow-auto"
         >
