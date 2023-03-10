@@ -18,7 +18,8 @@ const ImageCard = ({ src, likes, id }) => {
   const getLike = () => {
     setForLike((prev) => !prev);
     dispatch(likeAPost(id)).then(() => {
-      if (!limit) return dispatch(getUserData());
+      dispatch(getUserData());
+      if (!limit) return;
       toast.error(
         'You have reached your 100 likes daily limit! Come back at (time)'
       );

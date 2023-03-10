@@ -14,10 +14,11 @@ import './pages.css';
 const Dashboard = () => {
   const [isFetching, setIsFetching] = useState(false);
   const listener = useRef(true);
+  const [delay, setDelay] = useState(false);
   const { isLoading, pageNumber, profiles } = useSelector(
     (state) => state.dashboard
   );
-
+  console.log(delay);
   const dispatch = useDispatch();
   const increase = () => {
     dispatch(pageCounter());
@@ -28,27 +29,14 @@ const Dashboard = () => {
       listener.current = false;
       dispatch(uploadProfiles(pageNumber));
     }
+    setDelay(true);
+    const timer = setTimeout(() => {
+      setDelay(false);
+    }, 2000);
+    return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const handleScroll = (e) => {
-  //   console.log(
-  //     e.target.scrollHeight,
-  //     e.target.scrollTop,
-  //     e.target.clientHeight
-  //   );
-  //   const bottom =
-  //     e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-  //   if (bottom) {
-  //     setIsFetching(true);
-  //     setTimeout(() => {
-  //       console.log('reached');
-  //       // increase();
-  //       // dispatch(updateProfilesList(pageNumber));
-  //     }, 1500);
-  //     return;
-  //   }
-  // };
   const divRef = useRef(null);
   const handleScroll = () => {
     const container = divRef.current;
@@ -64,7 +52,7 @@ const Dashboard = () => {
 
   return (
     <Dashboardlayout>
-      {isLoading ? (
+      {delay ? (
         <SyncLoader color="#fff" loading={true} size={10} />
       ) : (
         <div
